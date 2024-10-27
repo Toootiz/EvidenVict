@@ -28,11 +28,11 @@ int main() {
 
     // Nombres de archivo y sus nombres de vector correspondientes
     vector<pair<string, string>> nombresArchivos = {
-        {"../Archivos/mcode1.txt", "mcode1"},
-        {"../Archivos/mcode2.txt", "mcode2"},
-        {"../Archivos/mcode3.txt", "mcode3"},
-        {"../Archivos/transmission1.txt", "transmission1"},
-        {"../Archivos/transmission2.txt", "transmission2"}
+        {"../../Archivos/mcode1.txt", "mcode1"},
+        {"../../Archivos/mcode2.txt", "mcode2"},
+        {"../../Archivos/mcode3.txt", "mcode3"},
+        {"../../Archivos/transmission1.txt", "transmission1"},
+        {"../../Archivos/transmission2.txt", "transmission2"}
     };
 
     // Leer cada archivo y almacenar su contenido en el map con el nombre correspondiente
@@ -53,3 +53,4 @@ int main() {
 
     return 0;
 }
+
