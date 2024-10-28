@@ -22,34 +22,82 @@ vector<string> leerArchivo(const string& nombreArchivo) {
     return lineas;
 }
 
-int main() {
-    // Mapa para asociar el nombre de cada vector con el contenido del archivo correspondiente
-    map<string, vector<string>> contenidoArchivos;
+vector<int> calcularFuncionZ(vector<string>& Arreglo,  int Pos_inicio) {
+    
+    vector<int> Z;
+    Z.resize(Arreglo.size());
 
-    // Nombres de archivo y sus nombres de vector correspondientes
-    vector<pair<string, string>> nombresArchivos = {
-        {"../../Archivos/mcode1.txt", "mcode1"},
-        {"../../Archivos/mcode2.txt", "mcode2"},
-        {"../../Archivos/mcode3.txt", "mcode3"},
-        {"../../Archivos/transmission1.txt", "transmission1"},
-        {"../../Archivos/transmission2.txt", "transmission2"}
+    for (int i = Pos_inicio; i < Arreglo.size(); i++) {
+        int j = 0;
+        while (i + j < Arreglo.size() && Arreglo[i + j] == Arreglo[j]) {
+            if(Arreglo[j] == "$") break;
+            else j++;
+        }
+        Z[i] = j;
+    }
+    return Z;
+}
+
+void Search(string transmission, string mcode, string transmissionName, string mcodeName) {
+    string S = mcode + "$" + transmission;
+    vector<string> Arreglo(S.size());
+    for (int i = 0; i < S.size(); i++) {
+        Arreglo[i] = S[i];
+    }
+    vector<int> Z=calcularFuncionZ(Arreglo,  mcode.size() + 1);
+    int m = mcode.size();
+    bool found = false;
+    for (int i = 0; i < Z.size(); i++) {
+        if (Z[i] == m-1) {
+           found = true;
+        }
+    }
+    if (found) {
+        cout << "El archivo " << transmissionName << " contiene al archivo " << mcodeName << endl;
+    } else {
+        cout << "El archivo " << transmissionName << " no contiene al archivo " << mcodeName << endl;
+    }
+}
+
+int main() {
+    string transmission1, transmission2, mcode1, mcode2, mcode3;
+
+    string fileNames[] = {
+        "../../Archivos/transmission1.txt",
+        "../../Archivos/transmission2.txt",
+        "../../Archivos/mcode1.txt",
+        "../../Archivos/mcode2.txt",
+        "../../Archivos/mcode3.txt"
     };
 
-    // Leer cada archivo y almacenar su contenido en el map con el nombre correspondiente
-    for (const auto& archivo : nombresArchivos) {
-        vector<string> contenidoActual = leerArchivo(archivo.first);
-        contenidoArchivos[archivo.second] = contenidoActual;  // Asignar el contenido al nombre del vector
+    for (int i = 0; i < 5; ++i) {
+        ifstream file(fileNames[i]); 
+        if (file.is_open()) {
+            string line;
+            string content;
+            while (getline(file, line)) {
+                content += line + "\n"; 
+            }
+            file.close(); 
+            switch (i) {
+                case 0: transmission1 = content; break;
+                case 1: transmission2 = content; break;
+                case 2: mcode1 = content; break;
+                case 3: mcode2 = content; break;
+                case 4: mcode3 = content; break;
+            }
+        } else {
+            cerr << "No se pudo abrir el archivo: " << fileNames[i] << endl;
+        }
     }
 
-    // Mostrar el contenido de cada archivo usando su nombre de vector
-    for (const auto& archivo : nombresArchivos) {
-        const string& nombreVector = archivo.second;
-        cout << "Contenido de " << nombreVector << ":\n";
-        for (const string& linea : contenidoArchivos[nombreVector]) {
-            cout << linea << '\n';
-        }
-        cout << "\n";
-    }
+
+    Search(transmission1, mcode1, "transmission1", "mcode1");
+    Search(transmission1, mcode2, "transmission1", "mcode2");
+    Search(transmission1, mcode3, "transmission1", "mcode3");
+    Search(transmission2, mcode1, "transmission2", "mcode1");
+    Search(transmission2, mcode2, "transmission2", "mcode2");
+    Search(transmission2, mcode3, "transmission2", "mcode3");
 
     return 0;
 }
