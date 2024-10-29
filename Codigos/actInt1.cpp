@@ -6,22 +6,6 @@
 
 using namespace std;
 
-// Función para leer el contenido de un archivo y devolverlo como un vector de strings
-vector<string> leerArchivo(const string& nombreArchivo) {
-    ifstream archivo(nombreArchivo);
-    vector<string> lineas;
-    if (archivo.is_open()) {
-        string linea;
-        while (getline(archivo, linea)) {
-            lineas.push_back(linea);
-        }
-        archivo.close();
-    } else {
-        cout << "No se pudo abrir el archivo: " << nombreArchivo << "\n";
-    }
-    return lineas;
-}
-
 vector<int> calcularFuncionZ(vector<string>& Arreglo, int Pos_inicio) {
     vector<int> Z;
     Z.resize(Arreglo.size());
@@ -149,7 +133,7 @@ int main() {
         "../../Archivos/mcode2.txt",
         "../../Archivos/mcode3.txt"
     };
-
+    // Lectura de archivos
     for (int i = 0; i < 5; ++i) {
         ifstream file(fileNames[i]); 
         if (file.is_open()) {
