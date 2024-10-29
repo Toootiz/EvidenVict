@@ -166,7 +166,7 @@ int main() {
 
     // Parte 2: Encontrar el palíndromo más largo en cada transmisión utilizando Manacher
     pair<int, int> palindromo1 = manacher(transmission1);
-    cout << "Palíndromo más largo en transmission1: " << endl << "Posición inicial: " << palindromo1.first << ", Posición final: " << palindromo1.second << endl;
+    cout << "Palíndromo más largo en transmission1: " << endl << "Posición inicial: " << palindromo1.first << ", Posición final: " << palindromo1.second << endl << endl;
 
     pair<int, int> palindromo2 = manacher(transmission2);
     cout << "Palíndromo más largo en transmission2: " << endl << "Posición inicial: " << palindromo2.first << ", Posición final: " << palindromo2.second << endl << endl;
