@@ -22,15 +22,14 @@ vector<string> leerArchivo(const string& nombreArchivo) {
     return lineas;
 }
 
-vector<int> calcularFuncionZ(vector<string>& Arreglo,  int Pos_inicio) {
-    
+vector<int> calcularFuncionZ(vector<string>& Arreglo, int Pos_inicio) {
     vector<int> Z;
     Z.resize(Arreglo.size());
 
     for (int i = Pos_inicio; i < Arreglo.size(); i++) {
         int j = 0;
         while (i + j < Arreglo.size() && Arreglo[i + j] == Arreglo[j]) {
-            if(Arreglo[j] == "$") break;
+            if (Arreglo[j] == "$") break;
             else j++;
         }
         Z[i] = j;
@@ -44,12 +43,12 @@ void Search(string transmission, string mcode, string transmissionName, string m
     for (int i = 0; i < S.size(); i++) {
         Arreglo[i] = S[i];
     }
-    vector<int> Z=calcularFuncionZ(Arreglo,  mcode.size() + 1);
+    vector<int> Z = calcularFuncionZ(Arreglo, mcode.size() + 1);
     int m = mcode.size();
     bool found = false;
     for (int i = 0; i < Z.size(); i++) {
-        if (Z[i] == m-1) {
-           found = true;
+        if (Z[i] == m - 1) {
+            found = true;
         }
     }
     if (found) {
@@ -57,6 +56,32 @@ void Search(string transmission, string mcode, string transmissionName, string m
     } else {
         cout << "(False) El archivo " << transmissionName << " no contiene el codigo " << mcode <<" del archivo "<< mcodeName << endl;
     }
+}
+
+// Función para encontrar el Longest Common Substring
+void longestCommonSubstring(const string s1, const string s2) {
+    int n = s1.length();
+    int m = s2.length();
+    vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
+
+    int maxLength = 0;  
+    int endPos1 = 0;   
+
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= m; j++) {
+            if (s1[i - 1] == s2[j - 1]) {
+                dp[i][j] = dp[i - 1][j - 1] + 1;
+                if (dp[i][j] > maxLength) {
+                    maxLength = dp[i][j];
+                    endPos1 = i; 
+                }
+            }
+        }
+    }
+
+    int startPos1 = endPos1 - maxLength + 1;
+
+    cout << "Substring común más largo entre las transmisiones: " << startPos1 << " " << endPos1 << endl;
 }
 
 int main() {
@@ -91,7 +116,7 @@ int main() {
         }
     }
 
-
+    // Parte 1: Buscar código malicioso en transmisiones
     Search(transmission1, mcode1, "transmission1", "mcode1");
     Search(transmission1, mcode2, "transmission1", "mcode2");
     Search(transmission1, mcode3, "transmission1", "mcode3");
@@ -99,6 +124,8 @@ int main() {
     Search(transmission2, mcode2, "transmission2", "mcode2");
     Search(transmission2, mcode3, "transmission2", "mcode3");
 
+    // Parte 3: Encontrar Longest Common Substring entre transmisiones
+    longestCommonSubstring(transmission1, transmission2);
+
     return 0;
 }
-
