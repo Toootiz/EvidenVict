@@ -37,7 +37,7 @@ vector<int> calcularFuncionZ(vector<string>& Arreglo, int Pos_inicio) {
     return Z;
 }
 
-void Search(string transmission, string mcode, string transmissionName, string mcodeName) {
+void search(string transmission, string mcode, string transmissionName, string mcodeName) {
     string S = mcode + "$" + transmission;
     vector<string> Arreglo(S.size());
     for (int i = 0; i < S.size(); i++) {
@@ -56,6 +56,61 @@ void Search(string transmission, string mcode, string transmissionName, string m
     } else {
         cout << "(False) El archivo " << transmissionName << " no contiene el codigo " << mcode <<" del archivo "<< mcodeName << endl;
     }
+}
+
+// Función para preprocesar la cadena para el algoritmo de Manacher
+string preprocesarCadena(const string& s) {
+    if (s.empty()) return "^$";
+    string ret = "^"; 
+
+    for (char c : s) {
+        ret += "#" + string(1, c);
+    }
+
+    ret += "#$"; 
+    return ret;
+}
+
+// Función para encontrar el palindromo más largo usando el algoritmo de Manacher
+pair<int, int> manacher(const string& s) {
+    string cadena = preprocesarCadena(s);
+    int n = cadena.length();
+    vector<int> positions(n, 0);
+
+    int center = 0, right = 0; // Centro y límite derecho del palíndromo actual más grande
+    for (int i = 1; i < n - 1; ++i) {
+        int i_mirror = 2 * center - i; // Índice reflejado de i con respecto al centro
+
+        if (right > i) {
+            positions[i] = min(right - i, positions[i_mirror]);
+        }
+
+        // Intentar expandir el palíndromo centrado en i
+        while (cadena[i + 1 + positions[i]] == cadena[i - 1 - positions[i]]) {
+            positions[i]++;
+        }
+
+        // Actualizar el centro y límite derecho si el palíndromo expandido va más allá del límite derecho
+        if (i + positions[i] > right) {
+            center = i;
+            right = i + positions[i];
+        }
+    }
+
+    // Encontrar el palíndromo más largo
+    int maxLongitud = 0;
+    int centroIndex = 0;
+    for (int i = 1; i < n - 1; ++i) {
+        if (positions[i] > maxLongitud) {
+            maxLongitud = positions[i];
+            centroIndex = i;
+        }
+    }
+
+    // Convertir el índice de centro del palíndromo encontrado a posiciones originales
+    int inicio = (centroIndex - 1 - maxLongitud) / 2;
+    int fin = inicio + maxLongitud - 1;
+    return {inicio + 1, fin + 1}; // Regresar posiciones
 }
 
 // Función para encontrar el Longest Common Substring
@@ -117,12 +172,20 @@ int main() {
     }
 
     // Parte 1: Buscar código malicioso en transmisiones
-    Search(transmission1, mcode1, "transmission1", "mcode1");
-    Search(transmission1, mcode2, "transmission1", "mcode2");
-    Search(transmission1, mcode3, "transmission1", "mcode3");
-    Search(transmission2, mcode1, "transmission2", "mcode1");
-    Search(transmission2, mcode2, "transmission2", "mcode2");
-    Search(transmission2, mcode3, "transmission2", "mcode3");
+    search(transmission1, mcode1, "transmission1", "mcode1");
+    search(transmission1, mcode2, "transmission1", "mcode2");
+    search(transmission1, mcode3, "transmission1", "mcode3");
+    search(transmission2, mcode1, "transmission2", "mcode1");
+    search(transmission2, mcode2, "transmission2", "mcode2");
+    search(transmission2, mcode3, "transmission2", "mcode3");
+    cout << endl;
+
+    // Parte 2: Encontrar el palíndromo más largo en cada transmisión utilizando Manacher
+    pair<int, int> palindromo1 = manacher(transmission1);
+    cout << "Palíndromo más largo en transmission1: " << endl << "Posición inicial: " << palindromo1.first << ", Posición final: " << palindromo1.second << endl;
+
+    pair<int, int> palindromo2 = manacher(transmission2);
+    cout << "Palíndromo más largo en transmission2: " << endl << "Posición inicial: " << palindromo2.first << ", Posición final: " << palindromo2.second << endl << endl;
 
     // Parte 3: Encontrar Longest Common Substring entre transmisiones
     longestCommonSubstring(transmission1, transmission2);
