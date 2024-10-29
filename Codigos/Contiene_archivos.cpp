@@ -53,9 +53,9 @@ void Search(string transmission, string mcode, string transmissionName, string m
         }
     }
     if (found) {
-        cout << "El archivo " << transmissionName << " contiene al archivo " << mcodeName << endl;
+        cout << "(True) El archivo " << transmissionName << " contiene el codigo " << mcode <<" del archivo "<<mcodeName << endl;
     } else {
-        cout << "El archivo " << transmissionName << " no contiene al archivo " << mcodeName << endl;
+        cout << "(False) El archivo " << transmissionName << " no contiene el codigo " << mcode <<" del archivo "<< mcodeName << endl;
     }
 }
 
