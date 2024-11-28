@@ -10,6 +10,7 @@ using namespace std;
 
 #define INF INT_MAX
 // Codigo inspirado en https://www.mycompiler.io/view/JV06mkzT2k9
+//Complejidad O(NlogN) donde N es el numero de nodos
 void Prim(vector<vector<int>>& Grafo){
    int n = Grafo.size();
     //Creamos la PQ y un vector MST para indicar que nodos ya fueron visitados
@@ -109,11 +110,14 @@ int main(){
     vector<vector<int>> grafo=Translate(Grafo);
     
     vector<vector<int>> grafo_prueba = {
-        {0, 2, 0, 6, 0},
-        {2, 0, 3, 8, 5},
-        {0, 3, 0, 0, 7},
-        {6, 8, 0, 0, 9},
-        {0, 5, 7, 9, 0}
+        {0, 12, 10, 0,  0,  0,  0, 14},
+    {12, 0,  8, 13, 0,  0,  0,  0},
+    {10, 8,  0,  9,  7,  0,  0,  0},
+    {0,  13, 9,  0,  11, 15, 0,  0},
+    {0,  0,  7,  11, 0,  6,  9,  0},
+    {0,  0,  0,  15, 6,  0,  8,  5},
+    {0,  0,  0,  0,  9,  8,  0, 10},
+    {14, 0,  0,  0,  0,  5,  10, 0}
     };
 
     Prim(grafo_prueba);
